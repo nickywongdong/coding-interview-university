@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "vector.h"
 
 
@@ -50,26 +51,27 @@ void vector::push(int item) {
   }
 
   //assign the last "free" position of the array item
-  *(this->arr + num_items) = item;
+  *(this->arr + num_items - 1) = item;
 
   this->num_items += 1;  //increment number of items in array
 }
 
 void vector::insert(int index, int item) {
+  printf("should be in insert\n");
   //test if adding one more item will overflow array or not:
-  if(num_items + 1 >= current_size) {
+  if(this->num_items + 1 >= this->current_size) {
     this->resize(this->current_size * 2);
   }
 
   //shift all items to the right of index over by 1:
   int i;
-  for(i=this->num_items; i>index; i--) {
+  for(i=this->num_items; i>=index; i--) {
     *(this->arr + i) = *(this->arr + i - 1);
   }
 
+
   //set arr at 'index' to 'item'
   *(this->arr + index - 1) = item;
-
   this->num_items += 1;  //increment number of items in the array
 }
 

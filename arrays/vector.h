@@ -1,4 +1,5 @@
-
+#ifndef VECTOR_H
+#define VECTOR_H
 class vector
 {
 private:
@@ -23,3 +24,5 @@ public:
   void remove(int item);
   int find(int item);
 };
+
+#endif

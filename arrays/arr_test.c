@@ -34,6 +34,12 @@ int main(void) {
   int index = 5;
   printf("\n%d\n", *(arr + 5 - 1)); //should print the 5'th element
 
-
+  //testing if we can use pointer arithmetic on unitialized values in an array:
+  int *newArray = malloc(sizeof(int) * 10);
+  for(int i=0; i<10; i++) {
+    printf("%d ", *(newArray + i));
+  }
+  //yes you can
+  printf("\n")
   return 0;
 }
