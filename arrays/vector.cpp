@@ -81,6 +81,10 @@ void vector::prepend(int item) {
 int vector::pop() {
   this->num_items -= 1;
 
+  //check if we need to shrink size of array or not:
+  if(this->num_items <= this->current_size / 4)
+    resize(this->current_size / 4);
+
   return *(this->arr + num_items);
 }
 
