@@ -1,5 +1,3 @@
-#include <iostream>
-
 
 class vector
 {
@@ -21,7 +19,7 @@ public:
   void insert(int index, int item);
   void prepend(int item);
   int pop();
-  void delete(int index);
+  void _delete(int index);
   void remove(int item);
   int find(int item);
-}
+};
