@@ -1,4 +1,4 @@
-#include <iostream>
+#include <stdlib.h>
 #include "vector.h"
 
 
@@ -51,11 +51,69 @@ void vector::push(int item) {
 
   //assign the last "free" position of the array item
   *(this.arr + num_items) = item;
+
+  this.num_items += 1;  //increment number of items in array
 }
-void vector::insert(int index, int item);
-void vector::prepend(int item);
-int vector::pop();
-void vector::delete(int index);
-void vector::remove(int item);
-int vector::find(int item);
-void vector::resize(int new_capacity);
+
+void vector::insert(int index, int item) {
+  //test if adding one more item will overflow array or not:
+  if(num_items + 1 >= current_size) {
+    this.resize(this.current_size * 2);
+  }
+
+  //shift all items to the right of index over by 1:
+  int i;
+  for(i=this.num_items; i>index; i--) {
+    *(this.arr + i) = *(this.arr + i - 1_);
+  }
+
+  //set arr at 'index' to 'item'
+  *(this.arr + index - 1) = item;
+
+  this.num+items += 1;  //increment number of items in the array
+}
+
+
+void vector::prepend(int item) {
+  insert(0, item);
+}
+
+int vector::pop() {
+  this.num_items -= 1;
+
+  return *(this.arr + num_items);
+}
+
+void vector::delete(int index) {
+  //shift all elements over to the left:
+  int i;
+  for(i=index; i<this.num_items; i++) {
+    *(this.arr + i) = *(this.arr + i + 1);
+  }
+
+  this.num_items -= 1;  //decrement number of items
+}
+
+void vector::remove(int item) {
+  int i;
+  for(i=0; i<this.num_items; i++) { //search for element matching 'item'
+    if(*(this.arr + i - 1) == item) {
+      delete(i);    //invoke delete method on found index
+    }
+  }
+}
+
+int vector::find(int item) {
+  int i;
+  for(i=0; i<this.num_items; i++) {
+    if(*(this.arr + i - 1) == item) {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
+void vector::resize(int new_capacity) {
+  this.arr = realloc(this.arr, this.current_size * sizeof(int) * 2);
+}
