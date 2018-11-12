@@ -5,31 +5,32 @@
 
 //Default Constructor-> Create array of size 16
 vector::vector() {
-  this->current_size = 16;
-  this->num_items = 0;
-  this->arr = (int*)malloc(sizeof(int) * this->current_size);
+  current_size = 16;
+  num_items = 0;
+  arr = (int*)malloc(sizeof(int) * current_size);
 }
 
 //Constructor
 vector::vector(int size) {
-  this->current_size = size;
-  this->num_items = 0;
-  this->arr = (int*)malloc(sizeof(int) * size);
+  current_size = size;
+  num_items = 0;
+  arr = (int*)malloc(sizeof(int) * size);
 
 }
 
 //destructor
 vector::~vector() {
-  free(this->arr);
+  printf("deallocating array\n");
+  free(arr);
 }
 
 
 int vector::size() {
-  return this->num_items;
+  return num_items;
 }
 
 int vector::capacity() {
-  return this->current_size;
+  return current_size;
 }
 
 int vector::is_empty() {
@@ -41,38 +42,37 @@ int vector::is_empty() {
 }
 
 int vector::at(int index) {
-  return *(this->arr + index - 1);
+  return *(arr + index - 1);
 }
 
 void vector::push(int item) {
-  if(this->current_size <= this->num_items) {
+  if(current_size <= num_items) {
     //we want to resize the array to have enough room for new item
-    this->resize(this->current_size * 2);
+    resize(current_size * 2);
   }
 
   //assign the last "free" position of the array item
-  *(this->arr + num_items - 1) = item;
+  *(arr + num_items - 1) = item;
 
-  this->num_items += 1;  //increment number of items in array
+  num_items += 1;  //increment number of items in array
 }
 
 void vector::insert(int index, int item) {
-  printf("should be in insert\n");
   //test if adding one more item will overflow array or not:
-  if(this->num_items + 1 >= this->current_size) {
-    this->resize(this->current_size * 2);
+  if(num_items + 1 >= current_size) {
+    resize(current_size * 2);
   }
 
   //shift all items to the right of index over by 1:
   int i;
-  for(i=this->num_items; i>=index; i--) {
-    *(this->arr + i) = *(this->arr + i - 1);
+  for(i=num_items; i>=index; i--) {
+    *(arr + i) = *(arr + i - 1);
   }
 
 
   //set arr at 'index' to 'item'
-  *(this->arr + index - 1) = item;
-  this->num_items += 1;  //increment number of items in the array
+  *(arr + index - 1) = item;
+  num_items += 1;  //increment number of items in the array
 }
 
 
@@ -81,29 +81,29 @@ void vector::prepend(int item) {
 }
 
 int vector::pop() {
-  this->num_items -= 1;
+  num_items -= 1;
 
   //check if we need to shrink size of array or not:
-  if(this->num_items <= this->current_size / 4)
-    resize(this->current_size / 4);
+  if(num_items <= current_size / 4)
+    resize(current_size / 4);
 
-  return *(this->arr + num_items);
+  return *(arr + num_items);
 }
 
 void vector::_delete(int index) {
   //shift all elements over to the left:
   int i;
-  for(i=index; i<this->num_items; i++) {
-    *(this->arr + i) = *(this->arr + i + 1);
+  for(i=index; i<num_items; i++) {
+    *(arr + i) = *(arr + i + 1);
   }
 
-  this->num_items -= 1;  //decrement number of items
+  num_items -= 1;  //decrement number of items
 }
 
 void vector::remove(int item) {
   int i;
-  for(i=0; i<this->num_items; i++) { //search for element matching 'item'
-    if(*(this->arr + i - 1) == item) {
+  for(i=0; i<num_items; i++) { //search for element matching 'item'
+    if(*(arr + i - 1) == item) {
       _delete(i);    //invoke delete method on found index
     }
   }
@@ -111,8 +111,8 @@ void vector::remove(int item) {
 
 int vector::find(int item) {
   int i;
-  for(i=0; i<this->num_items; i++) {
-    if(*(this->arr + i - 1) == item) {
+  for(i=0; i<num_items; i++) {
+    if(*(arr + i - 1) == item) {
       return i;
     }
   }
@@ -121,5 +121,6 @@ int vector::find(int item) {
 }
 
 void vector::resize(int new_capacity) {
-  this->arr = (int*)realloc(this->arr, this->current_size * sizeof(int) * 2);
+  printf("resizing the array\n");
+  arr = (int*)realloc(arr, current_size * sizeof(int) * 2);
 }

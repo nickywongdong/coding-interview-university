@@ -9,8 +9,8 @@ int main(void) {
   printf("Capacity of myVector: %d\n", myVector.capacity());
   printf("items in myVector before initializing: %d\n", myVector.size());
   //create an instance of the vector class with the constructor defined:
-  vector newVector(32);
-  printf("Capacity of newVector: %d\n", newVector.capacity());
+  //vector newVector(32);
+  //printf("Capacity of newVector: %d\n", newVector.capacity());
 
   int i;
   for(i=0; i<5; i++) {
