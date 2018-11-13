@@ -7,23 +7,20 @@
 vector::vector() {
   current_size = 16;
   num_items = 0;
-  arr = (int*)malloc(sizeof(int) * current_size);
+  arr = (int*)calloc(current_size, sizeof(int));
 }
 
-//Constructor
+//Default Constructor with arguments
 vector::vector(int size) {
   current_size = size;
   num_items = 0;
-  arr = (int*)malloc(sizeof(int) * size);
-
+  arr = (int*)calloc(size, sizeof(int));
 }
 
 //destructor
 vector::~vector() {
-  printf("deallocating array\n");
   free(arr);
 }
-
 
 int vector::size() {
   return num_items;
@@ -42,7 +39,11 @@ int vector::is_empty() {
 }
 
 int vector::at(int index) {
-  return *(arr + index - 1);
+  if(index < 0 || index > num_items) {
+    printf("Index: %d, is out of range. Size: %d\n", index, num_items);
+    return -1;
+  }
+  return *(arr + index);
 }
 
 void vector::push(int item) {
@@ -52,7 +53,7 @@ void vector::push(int item) {
   }
 
   //assign the last "free" position of the array item
-  *(arr + num_items - 1) = item;
+  *(arr + num_items) = item;
 
   num_items += 1;  //increment number of items in array
 }
@@ -65,13 +66,13 @@ void vector::insert(int index, int item) {
 
   //shift all items to the right of index over by 1:
   int i;
-  for(i=num_items; i>=index; i--) {
+  for(i=num_items; i>index; i--) {
     *(arr + i) = *(arr + i - 1);
   }
 
 
   //set arr at 'index' to 'item'
-  *(arr + index - 1) = item;
+  *(arr + index) = item;
   num_items += 1;  //increment number of items in the array
 }
 
@@ -97,13 +98,19 @@ void vector::_delete(int index) {
     *(arr + i) = *(arr + i + 1);
   }
 
-  num_items -= 1;  //decrement number of items
+  num_items -= 1;  //decrement number of Items
+
+  //test if new size is less than 1/4 of capacity:
+  if(num_items < (0.25 * num_items)) {
+    resize(0.25 * num_items);
+  }
 }
 
 void vector::remove(int item) {
   int i;
+
   for(i=0; i<num_items; i++) { //search for element matching 'item'
-    if(*(arr + i - 1) == item) {
+    if(*(arr + i) == item) {
       _delete(i);    //invoke delete method on found index
     }
   }
@@ -112,7 +119,7 @@ void vector::remove(int item) {
 int vector::find(int item) {
   int i;
   for(i=0; i<num_items; i++) {
-    if(*(arr + i - 1) == item) {
+    if(*(arr + i) == item) {
       return i;
     }
   }
@@ -121,6 +128,6 @@ int vector::find(int item) {
 }
 
 void vector::resize(int new_capacity) {
-  printf("resizing the array\n");
-  arr = (int*)realloc(arr, current_size * sizeof(int) * 2);
+  arr = (int*)realloc(arr, current_size * sizeof(int) * new_capacity);
+  current_size = new_capacity;
 }
